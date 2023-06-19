@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "app-survey-politik-2023",
+    "slug": "app-survey-politik-2023"
+  }
+}
