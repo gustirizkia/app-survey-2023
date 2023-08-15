@@ -7,6 +7,9 @@ import TabItem from "./TabItem";
 import Login from "../auth/Login";
 import Detail from "../Screen/Detail";
 import IndexSurvey from "../Screen/Survey/Index";
+import InputDataTarget from "../Screen/Survey/InputDataTarget";
+import Quiz from "../Screen/Survey/Quiz";
+import Profile from "../Screen/Profile";
 
 const Tab = createBottomTabNavigator();
 
@@ -32,6 +35,7 @@ const MainApp = () => {
         component={IndexSurvey}
         options={{ headerShown: false }}
       />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 };
@@ -50,6 +54,22 @@ export default function AppNav() {
         name="Detail"
         component={Detail}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Quiz"
+        component={Quiz}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="input-data-target"
+        component={InputDataTarget}
+        options={{
+          title: "Input Responden",
+          headerStyle: {
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+        }}
       />
       <Stack.Screen
         name="MainApp"

@@ -6,15 +6,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 import { getData, storeData } from "../Utils/Storage";
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import { BASE_URL } from "../components/API";
+import Loading from "../components/Loading";
 
 export default function Login({ navigation }) {
   const [Email, SetEmail] = useState("");
   const [Password, SetPassword] = useState("");
-  const BASE_URL = "http://survey.nusacitateknologi.my.id/api/";
+  const [hideLoading, SetHideLoading] = useState(true);
 
   useEffect(() => {
     getData("token")
       .then((resToken) => {
+        console.log("resToken", resToken);
         if (resToken) {
           navigation.replace("MainApp");
         }
@@ -25,18 +28,24 @@ export default function Login({ navigation }) {
   }, []);
 
   const handleSubmit = () => {
+    SetHideLoading(false);
     axios
       .post(`${BASE_URL}login`, {
         email: Email,
         password: Password,
       })
       .then((res) => {
+        SetHideLoading(true);
         let token = res.data.token;
         let user = res.data.user;
         storeData("token", { value: token });
         storeData("user", user);
+
+        navigation.replace("MainApp");
       })
       .catch((err) => {
+        SetHideLoading(true);
+        console.log("err", err);
         showMessage({
           message: "Gagal Login ",
           description: "Periksa Email dan Password Anda!",
@@ -48,6 +57,11 @@ export default function Login({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: "#fff" }}>
+      {!hideLoading && (
+        <>
+          <Loading LoadingShow={hideLoading} />
+        </>
+      )}
       <SafeAreaView className="flex-1 px-2 justify-center ">
         <View className="border border-gray-300 px-3  flex-row rounded-full items-center justify-between">
           <Icon name="user" size={18} color="#aaa" />
@@ -69,7 +83,7 @@ export default function Login({ navigation }) {
 
         <TouchableOpacity
           onPress={handleSubmit}
-          className="bg-indigo-700 py-3 px-2 rounded-full mt-4"
+          className="bg-yellow-600 py-3 px-2 rounded-full mt-4"
         >
           <Text className="text-white text-center">Login</Text>
         </TouchableOpacity>

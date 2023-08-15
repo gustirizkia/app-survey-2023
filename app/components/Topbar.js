@@ -14,13 +14,15 @@ export default function Topbar() {
   }, []);
 
   return (
-    <View className="bg-slate-600 rounded-b-3xl h-32 px-3">
+    <View className="bg-yellow-600 rounded-b-3xl h-32 px-3">
       <SafeAreaView className="flex-row justify-between items-center">
         <View className="flex-row items-center">
           <Icon name="user" size={24} color="#fff" />
           <View className="ml-3">
-            <Text className="text-white text-xl">{User?.name}</Text>
-            <Text className="text-gray-300">{User?.email}</Text>
+            <Text className="text-white text-lg">{User?.name}</Text>
+            {/* <Text className="text-gray-300">
+              {User?.role === "user" ? "Surveyor" : User?.role}
+            </Text> */}
           </View>
         </View>
         <View>

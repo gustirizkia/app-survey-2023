@@ -1,0 +1,54 @@
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+
+export default function YesNo({ TempSoal, callbackData }) {
+  const [YesNo, SetYesNo] = useState(null);
+  return (
+    <>
+      <TouchableOpacity
+        onPress={() => {
+          SetYesNo("iya");
+          callbackData("iya", TempSoal);
+        }}
+        className={`p-3 rounded-full mb-3 border flex-row items-center ${
+          YesNo === "iya"
+            ? "bg-yellow-500 text-white  border-yellow-500 "
+            : "bg-yellow-100 border-yellow-100"
+        }`}
+      >
+        <Text
+          className={`mr-2 text-sm ${YesNo === "iya" ? " text-white   " : ""}`}
+        >
+          1.
+        </Text>
+        <Text className={`text-sm ${YesNo === "iya" ? " text-white   " : ""}`}>
+          Iya
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          SetYesNo("tidak");
+          callbackData("tidak", TempSoal);
+        }}
+        className={`p-3 rounded-full mb-3 border flex-row items-center ${
+          YesNo === "tidak"
+            ? "bg-yellow-500 text-white  border-yellow-500 "
+            : "bg-yellow-100 border-yellow-100"
+        }`}
+      >
+        <Text
+          className={`mr-2 text-sm ${
+            YesNo === "tidak" ? " text-white   " : ""
+          }`}
+        >
+          1.
+        </Text>
+        <Text
+          className={`text-sm ${YesNo === "tidak" ? " text-white   " : ""}`}
+        >
+          Tidak
+        </Text>
+      </TouchableOpacity>
+    </>
+  );
+}

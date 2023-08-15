@@ -4,10 +4,25 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "app-survey-politik-2023",
-    "slug": "app-survey-politik-2023",
+    "name": "Dor To Dor",
+    "slug": "dor-todor",
     "android": {
       "package": "com.gustikantor.appsurveypolitik2023"
-    }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Kami membutuhkan lokasi anda",
+          "NSLocationWhenInUseUsageDescription": "Kami membutuhkan lokasi anda"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Kami membutuhkan akses gallery"
+        }
+      ]
+    ]
   }
 }
