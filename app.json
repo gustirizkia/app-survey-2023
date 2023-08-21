@@ -4,7 +4,7 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "Dor To Dor",
+    "name": "Survey Dor To Dor",
     "slug": "dor-todor",
     "android": {
       "package": "com.gustikantor.appsurveypolitik2023",
@@ -34,6 +34,9 @@
       "eas": {
         "projectId": "cb2325da-122c-4677-9315-e7d1c1ecebff"
       }
+    },
+    "ios": {
+      "bundleIdentifier": "com.gustikantor.appsurveypolitik2023"
     }
   }
 }

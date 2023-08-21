@@ -23,7 +23,7 @@ export default function DesaSelect({
   };
   return (
     <View>
-      <Text className="text-lg font-medium">Kecamatan</Text>
+      <Text className="text-lg font-medium">Desa</Text>
       <View className="">
         <TouchableOpacity onPress={() => bottomSheet.current.show()}>
           <Text className="border mt-2 rounded-lg py-2 border-gray-400 px-2">

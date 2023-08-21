@@ -113,7 +113,7 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.gustikantor.appsurveypolitik2023'
+    namespace "com.surveydortodor"
     defaultConfig {
         applicationId 'com.gustikantor.appsurveypolitik2023'
         minSdkVersion rootProject.ext.minSdkVersion
