@@ -103,7 +103,7 @@ export default function Login({ navigation }) {
             </TouchableOpacity>
           </View>
 
-          <Text className="text-center text-gray-300 bottom-0 mx-auto left-0 right-0">
+          <Text className="text-center text-gray-300 absolute bottom-5 mx-auto left-0 right-0">
             DEVELOPER BY NCT{" "}
           </Text>
         </SafeAreaView>

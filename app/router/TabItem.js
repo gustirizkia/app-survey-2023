@@ -6,7 +6,7 @@ export default function TabItem({ state, descriptors, navigation }) {
   return (
     <View
       style={{ flexDirection: "row" }}
-      className="bg-white py-4 rounded-2xl mx-2 absolute bottom-2 border border-gray-100"
+      className="bg-white py-4 rounded-t-2xl  border-t border-gray-100"
     >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
