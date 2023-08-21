@@ -18,6 +18,7 @@ import Topbar from "../components/Topbar";
 import Loading from "../components/Loading";
 import axios from "axios";
 import { BASE_URL } from "../components/API";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
@@ -59,6 +60,11 @@ export default function Home({ navigation }) {
         })
         .catch((err) => {
           console.log("err", err);
+
+          if (err?.response?.data?.message === "Unauthenticated.") {
+            AsyncStorage.clear();
+            navigation.replace("Login");
+          }
         });
     });
   };

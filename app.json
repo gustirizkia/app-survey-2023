@@ -5,6 +5,7 @@
       "bundler": "metro"
     },
     "name": "Survey Dor To Dor",
+    "icon": "./assets/logo_1.png",
     "slug": "dor-todor",
     "android": {
       "package": "com.gustikantor.appsurveypolitik2023",
@@ -13,7 +14,8 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "runtimeVersion": "1.0.0"
     },
     "plugins": [
       [
@@ -36,7 +38,13 @@
       }
     },
     "ios": {
-      "bundleIdentifier": "com.gustikantor.appsurveypolitik2023"
+      "bundleIdentifier": "com.gustikantor.appsurveypolitik2023",
+      "runtimeVersion": {
+        "policy": "sdkVersion"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/cb2325da-122c-4677-9315-e7d1c1ecebff"
     }
   }
 }
