@@ -70,73 +70,79 @@ export default function Home({ navigation }) {
   };
 
   return (
-    <ScrollView
-      className="bg-blue-50"
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      <Topbar />
-
+    <>
       {!hideLoading && <Loading />}
+      <ScrollView
+        className="bg-blue-50"
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <Topbar />
 
-      <View className="bg-white mx-3 rounded-xl p-3 -mt-6">
-        <Text className="font-medium text-lg text-slate-700">
-          Kategori Tugas
-        </Text>
-        <View className="flex-row space-x-7 justify-around mt-2">
-          <TouchableOpacity className=" items-center">
-            <Image source={IC_input} className="w-14 h-14 object-contain" />
-            <Text className="text-xs text-slate-500 mt-1">Input Relawan</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Survey")}
-            className=" items-center"
-          >
-            <Image source={IC_survey} className="w-14 h-14 object-contain" />
-            <Text className="text-xs text-slate-500 mt-1">Survey</Text>
-          </TouchableOpacity>
-          <View className=" items-center">
-            <Image source={IC_qc} className="w-14 h-14 object-contain" />
-            <Text className="text-xs text-slate-500 mt-1">Quick Qount</Text>
+        <View className="bg-white mx-3 rounded-xl p-3 -mt-6">
+          <Text className="font-medium text-lg text-slate-700">
+            Kategori Tugas
+          </Text>
+          <View className="flex-row space-x-7 justify-around mt-2">
+            <TouchableOpacity className=" items-center">
+              <Image source={IC_input} className="w-14 h-14 object-contain" />
+              <Text className="text-xs text-slate-500 mt-1">Input Relawan</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Survey")}
+              className=" items-center"
+            >
+              <Image source={IC_survey} className="w-14 h-14 object-contain" />
+              <Text className="text-xs text-slate-500 mt-1">Survey</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("RealCount")}
+              className=" items-center"
+            >
+              <Image source={IC_qc} className="w-14 h-14 object-contain" />
+              <Text className="text-xs text-slate-500 mt-1">Quick Qount</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </View>
-      <View>
-        <View className="bg-white p-3 mt-3 mb-32">
-          <Text className="font-medium mb-5">Riwayat Survey</Text>
+        <View>
+          <View className="bg-white p-3 mt-3 mb-32">
+            <Text className="font-medium mb-5">Riwayat Survey</Text>
 
-          {RiwayatSurvey.map((item) => {
-            return (
-              <View
-                className="border-b p-2 border-gray-300 pb-3 mb-3"
-                key={item.id}
-              >
-                <Text className="">{item.nama}</Text>
-                <View className="flex-row justify-between">
-                  <Text className="text-gray-600 mt-2">{item.created_at}</Text>
-                  <View>
-                    {item.foto_bersama ? (
-                      <Text>Selesai</Text>
-                    ) : (
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate("Quiz", {
-                            target_id: item.id,
-                          })
-                        }
-                      >
-                        <Text className="text-yellow-700">Lanjut</Text>
-                      </TouchableOpacity>
-                    )}
+            {RiwayatSurvey.map((item) => {
+              return (
+                <View
+                  className="border-b p-2 border-gray-300 pb-3 mb-3"
+                  key={item.id}
+                >
+                  <Text className="">{item.nama}</Text>
+                  <View className="flex-row justify-between">
+                    <Text className="text-gray-600 mt-2">
+                      {item.created_at}
+                    </Text>
+                    <View>
+                      {item.foto_bersama ? (
+                        <Text>Selesai</Text>
+                      ) : (
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate("Quiz", {
+                              target_id: item.id,
+                            })
+                          }
+                        >
+                          <Text className="text-yellow-700">Lanjut</Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
                   </View>
                 </View>
-              </View>
-            );
-          })}
+              );
+            })}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }
 

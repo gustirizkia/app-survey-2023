@@ -10,6 +10,7 @@ import IndexSurvey from "../Screen/Survey/Index";
 import InputDataTarget from "../Screen/Survey/InputDataTarget";
 import Quiz from "../Screen/Survey/Quiz";
 import Profile from "../Screen/Profile";
+import RealCount from "../Screen/QuickQount/RealCount";
 
 const Tab = createBottomTabNavigator();
 
@@ -59,6 +60,17 @@ export default function AppNav() {
         name="Quiz"
         component={Quiz}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="RealCount"
+        component={RealCount}
+        options={{
+          title: "Real Count",
+          headerStyle: {
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+        }}
       />
       <Stack.Screen
         name="input-data-target"

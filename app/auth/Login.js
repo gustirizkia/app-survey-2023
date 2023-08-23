@@ -59,6 +59,11 @@ export default function Login({ navigation }) {
 
   return (
     <>
+      {!hideLoading && (
+        <>
+          <Loading LoadingShow={hideLoading} />
+        </>
+      )}
       <ScrollView
         contentContainerStyle={{
           flex: 1,
@@ -66,11 +71,6 @@ export default function Login({ navigation }) {
           justifyContent: "space-between",
         }}
       >
-        {!hideLoading && (
-          <>
-            <Loading LoadingShow={hideLoading} />
-          </>
-        )}
         <Image source={Header_IC} className="absolute" />
         <SafeAreaView className="flex-1 px-2 justify-center ">
           <View>

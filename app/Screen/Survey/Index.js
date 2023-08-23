@@ -78,16 +78,16 @@ export default function IndexSurvey({ navigation }) {
 
   return (
     <>
+      {!hideLoading && <Loading />}
       <ScrollView
         className="bg-blue-50 pb-56 "
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {!hideLoading && <Loading />}
         <Topbar />
         <View className="bg-white mx-3 rounded-xl p-3 -mt-6 ">
-          <Text className="">Total Survey cek</Text>
+          <Text className="">Total Survey</Text>
           <Text className="text-2xl text-yellow-600 font-medium">
             {RiwayatSurvey.length}
           </Text>

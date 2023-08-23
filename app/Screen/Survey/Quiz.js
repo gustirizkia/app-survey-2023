@@ -220,56 +220,58 @@ export default function Quiz({ route, navigation }) {
   };
 
   return (
-    <ScrollView>
+    <>
       {!hideLoading && <Loading />}
-      <SafeAreaView className="bg-white px-3 mb-2 pb-3">
-        <View>
-          <Text className="text-lg font-medium">Survey</Text>
-        </View>
-      </SafeAreaView>
-      {SoalGeneral.map((item) => {
-        return (
-          <View key={item.id} className="bg-white rounded-lg p-3 mb-4">
-            <Text className="mb-4 font-semibold text-lg">{item.title}</Text>
-            {item.yes_no > 0 ? (
-              <>
-                <YesNo
-                  TempSoal={item}
-                  callbackData={(pilihan, itemData) => {
-                    handelPilihanYesNo(pilihan, itemData, "general");
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <MultiplePilihan
-                  TempSoal={item}
-                  callBack={(pilihan, itemData) => {
-                    handleSetPilihan(pilihan, itemData);
-                  }}
-                />
-              </>
-            )}
+      <ScrollView>
+        <SafeAreaView className="bg-white px-3 mb-2 pb-3">
+          <View>
+            <Text className="text-lg font-medium">Survey</Text>
           </View>
-        );
-      })}
+        </SafeAreaView>
+        {SoalGeneral.map((item) => {
+          return (
+            <View key={item.id} className="bg-white rounded-lg p-3 mb-4">
+              <Text className="mb-4 font-semibold text-lg">{item.title}</Text>
+              {item.yes_no > 0 ? (
+                <>
+                  <YesNo
+                    TempSoal={item}
+                    callbackData={(pilihan, itemData) => {
+                      handelPilihanYesNo(pilihan, itemData, "general");
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <MultiplePilihan
+                    TempSoal={item}
+                    callBack={(pilihan, itemData) => {
+                      handleSetPilihan(pilihan, itemData);
+                    }}
+                  />
+                </>
+              )}
+            </View>
+          );
+        })}
 
-      <UploadImage
-        callbackImage={(data) => {
-          handelUploadImage(data);
-        }}
-      />
-      <View className="bg-white p-3">
-        <TouchableOpacity
-          onPress={handelSubmitData}
-          className=" bg-yellow-600 py-3 rounded-lg mt-4 mb-8"
-        >
-          <Text className="text-white text-center font-medium">
-            Simpan dan selesai
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+        <UploadImage
+          callbackImage={(data) => {
+            handelUploadImage(data);
+          }}
+        />
+        <View className="bg-white p-3">
+          <TouchableOpacity
+            onPress={handelSubmitData}
+            className=" bg-yellow-600 py-3 rounded-lg mt-4 mb-8"
+          >
+            <Text className="text-white text-center font-medium">
+              Simpan dan selesai
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </>
   );
 }
 

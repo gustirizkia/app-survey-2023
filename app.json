@@ -15,7 +15,9 @@
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.RECORD_AUDIO"
       ],
-      "runtimeVersion": "1.0.0"
+      "runtimeVersion": {
+        "policy": "sdkVersion"
+      }
     },
     "plugins": [
       [
