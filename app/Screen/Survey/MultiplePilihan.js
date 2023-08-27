@@ -4,6 +4,13 @@ import React, { useEffect, useState } from "react";
 export default function MultiplePilihan({ TempSoal, callBack }) {
   const [PilihanId, SetPilihanId] = useState(0);
 
+  useEffect(() => {
+    if (TempSoal.check_pilihan_target?.pilihan_ganda_id) {
+      SetPilihanId(TempSoal.check_pilihan_target?.pilihan_ganda_id);
+      callBack(TempSoal.check_pilihan_target?.pilihan_ganda_id, TempSoal);
+    }
+  }, []);
+
   return (
     <View>
       {TempSoal.pilihan.map((item, index) => {

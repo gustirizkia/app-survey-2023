@@ -11,6 +11,7 @@ import InputDataTarget from "../Screen/Survey/InputDataTarget";
 import Quiz from "../Screen/Survey/Quiz";
 import Profile from "../Screen/Profile";
 import RealCount from "../Screen/QuickQount/RealCount";
+import Splash from "../Screen/Splash";
 
 const Tab = createBottomTabNavigator();
 
@@ -46,6 +47,11 @@ const Stack = createNativeStackNavigator();
 export default function AppNav() {
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="Splash"
+        component={Splash}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Login"
         component={Login}

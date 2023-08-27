@@ -13,6 +13,7 @@ import { TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import UploadImage from "./UploadImage";
 import Loading from "../../components/Loading";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 export default function Quiz({ route, navigation }) {
   const [HideLoading, SetHideLoading] = useState(false);
@@ -61,6 +62,35 @@ export default function Quiz({ route, navigation }) {
   };
 
   const handelPilihanYesNo = (pilihan, soal, type) => {
+    token.then((resToken) => {
+      axios
+        .post(
+          `${BASE_URL}saveOne`,
+          {
+            soal_id: soal.id,
+            pilihan: pilihan,
+            data_target_id: target_id,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + resToken.value,
+              "content-type": "multipart/form-data",
+            },
+          }
+        )
+        .then((ress) => {
+          console.log("ress save one", ress);
+          showMessage({
+            message: "Berhasil simpan data ",
+            // description: "Periksa Email dan Password Anda!",
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          console.log("err save one yes no", err);
+        });
+    });
+
     let newData = [];
     let filterArray = null;
     if (soal.skip_soal) {
@@ -131,12 +161,73 @@ export default function Quiz({ route, navigation }) {
     }
   };
 
-  const handleSetPilihan = (pilihan, item) => {
+  const handleSetPilihan = (pilihan, item, type) => {
+    let newData = [];
+    let filterArray = null;
+    let soal = item;
+
+    if (item.skip_soal) {
+      SoalGeneral.map((el, index) => {
+        newData.push(el);
+        if (el.id === soal.id) {
+          if (
+            SoalGeneral[index + 1].skip_soal_id !== soal.id &&
+            soal.skip_soal?.skip_if_pilihan_id !== pilihan
+          ) {
+            newData.push(el.skip_soal);
+          } else {
+            if (SoalGeneral[index + 1].skip_soal_id === soal.id) {
+              if (soal.skip_soal?.skip_if_pilihan_id === pilihan) {
+                filterArray = SoalGeneral.filter(
+                  (item) => item.skip_soal_id !== soal.id
+                );
+              }
+            }
+          }
+        }
+      });
+
+      if (filterArray) {
+        SetSoalGeneral(filterArray);
+      } else {
+        SetSoalGeneral(newData);
+      }
+    }
+
     let formPiliihan = {
       soal_id: item.id,
       pilihan_id: pilihan,
       yes_no: null,
     };
+
+    token.then((resToken) => {
+      axios
+        .post(
+          `${BASE_URL}saveOne`,
+          {
+            soal_id: item.id,
+            pilihan: pilihan,
+            data_target_id: target_id,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + resToken.value,
+              "content-type": "multipart/form-data",
+            },
+          }
+        )
+        .then((ress) => {
+          console.log("ress save one", ress);
+          showMessage({
+            message: "Berhasil simpan data ",
+            // description: "Periksa Email dan Password Anda!",
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          console.log("err save one", err);
+        });
+    });
 
     let soal_id = null;
     PilihanUser.map((itemMap) => {
@@ -157,15 +248,12 @@ export default function Quiz({ route, navigation }) {
       let soal = item;
 
       newData.map((el, index) => {
-        console.log("el", el);
         if (el.soal_id === soal.skip_soal?.skip_soal_id) {
           if (pilihan === soal.skip_soal?.skip_if_pilihan_id) {
-            newData = newData.filter((item) => {
-              console.log("item", item);
-              return item.soal_id !== soal.skip_soal?.id;
+            newData = newData.filter((itemData) => {
+              // console.log("itemData", itemData);
+              return itemData.soal_id !== soal.skip_soal?.id;
             });
-
-            console.log("newData", newData);
           }
         }
       });
@@ -174,6 +262,8 @@ export default function Quiz({ route, navigation }) {
     } else {
       SetPilihanUser((PilihanUser) => [...PilihanUser, formPiliihan]);
     }
+
+    // end function
   };
 
   const handelSubmitData = () => {
@@ -189,8 +279,6 @@ export default function Quiz({ route, navigation }) {
     let filename = localUri.split("/").pop();
     let match = /\.(\w+)$/.exec(filename);
     let type = match ? `image/${match[1]}` : `image`;
-
-    console.log("filename", filename);
 
     let formData = new FormData();
     formData.append("pilihan", JSON.stringify(PilihanUser));
@@ -222,6 +310,7 @@ export default function Quiz({ route, navigation }) {
   return (
     <>
       {!hideLoading && <Loading />}
+      <FlashMessage position="bottom" />
       <ScrollView>
         <SafeAreaView className="bg-white px-3 mb-2 pb-3">
           <View>

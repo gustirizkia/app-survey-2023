@@ -1,8 +1,16 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function YesNo({ TempSoal, callbackData }) {
   const [YesNo, SetYesNo] = useState(null);
+
+  useEffect(() => {
+    if (TempSoal.check_pilihan_target) {
+      SetYesNo(TempSoal.check_pilihan_target.yes_no);
+      callbackData(TempSoal.check_pilihan_target.yes_no, TempSoal);
+    }
+  }, []);
+
   return (
     <>
       <TouchableOpacity
@@ -41,7 +49,7 @@ export default function YesNo({ TempSoal, callbackData }) {
             YesNo === "tidak" ? " text-white   " : ""
           }`}
         >
-          1.
+          2.
         </Text>
         <Text
           className={`text-sm ${YesNo === "tidak" ? " text-white   " : ""}`}

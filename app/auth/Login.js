@@ -16,19 +16,6 @@ export default function Login({ navigation }) {
   const [Password, SetPassword] = useState("");
   const [hideLoading, SetHideLoading] = useState(true);
 
-  useEffect(() => {
-    getData("token")
-      .then((resToken) => {
-        console.log("resToken", resToken);
-        if (resToken) {
-          navigation.replace("MainApp");
-        }
-      })
-      .catch((err) => {
-        console.log("err Token", err);
-      });
-  }, []);
-
   const handleSubmit = () => {
     SetHideLoading(false);
     axios
