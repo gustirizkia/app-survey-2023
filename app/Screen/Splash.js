@@ -27,6 +27,7 @@ export default function Splash({ navigation }) {
             navigation.replace("Login");
           });
       } else {
+        navigation.replace("Login");
       }
     });
   }, []);
