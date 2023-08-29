@@ -79,7 +79,6 @@ export default function Quiz({ route, navigation }) {
           }
         )
         .then((ress) => {
-          console.log("ress save one", ress);
           showMessage({
             message: "Berhasil simpan data ",
             // description: "Periksa Email dan Password Anda!",
@@ -98,12 +97,15 @@ export default function Quiz({ route, navigation }) {
         newData.push(el);
         if (el.id === soal.id) {
           if (
-            SoalGeneral[index + 1].skip_soal_id !== soal.id &&
+            SoalGeneral[index + 1]?.skip_soal_id !== soal.id &&
             soal.skip_soal?.skip_if_yes_no !== pilihan
           ) {
-            newData.push(el.skip_soal);
+            el.skip_soal_many.forEach((element_skip_many) => {
+              newData.push(element_skip_many);
+            });
+            // newData.push(el.skip_soal);
           } else {
-            if (SoalGeneral[index + 1].skip_soal_id === soal.id) {
+            if (SoalGeneral[index + 1]?.skip_soal_id === soal.id) {
               if (soal.skip_soal?.skip_if_yes_no === pilihan) {
                 filterArray = SoalGeneral.filter(
                   (item) => item.skip_soal_id !== soal.id
@@ -153,8 +155,6 @@ export default function Quiz({ route, navigation }) {
         }
       });
 
-      console.log("newData", newData);
-
       SetPilihanUser(newData);
     } else {
       SetPilihanUser((PilihanUser) => [...PilihanUser, formPiliihan]);
@@ -171,12 +171,14 @@ export default function Quiz({ route, navigation }) {
         newData.push(el);
         if (el.id === soal.id) {
           if (
-            SoalGeneral[index + 1].skip_soal_id !== soal.id &&
+            SoalGeneral[index + 1]?.skip_soal_id !== soal.id &&
             soal.skip_soal?.skip_if_pilihan_id !== pilihan
           ) {
-            newData.push(el.skip_soal);
+            el.skip_soal_many.forEach((element_skip_many) => {
+              newData.push(element_skip_many);
+            });
           } else {
-            if (SoalGeneral[index + 1].skip_soal_id === soal.id) {
+            if (SoalGeneral[index + 1]?.skip_soal_id === soal.id) {
               if (soal.skip_soal?.skip_if_pilihan_id === pilihan) {
                 filterArray = SoalGeneral.filter(
                   (item) => item.skip_soal_id !== soal.id
@@ -217,7 +219,6 @@ export default function Quiz({ route, navigation }) {
           }
         )
         .then((ress) => {
-          console.log("ress save one", ress);
           showMessage({
             message: "Berhasil simpan data ",
             // description: "Periksa Email dan Password Anda!",
@@ -251,7 +252,6 @@ export default function Quiz({ route, navigation }) {
         if (el.soal_id === soal.skip_soal?.skip_soal_id) {
           if (pilihan === soal.skip_soal?.skip_if_pilihan_id) {
             newData = newData.filter((itemData) => {
-              // console.log("itemData", itemData);
               return itemData.soal_id !== soal.skip_soal?.id;
             });
           }
@@ -295,10 +295,11 @@ export default function Quiz({ route, navigation }) {
             },
           })
           .then((ress) => {
-            console.log("ress", ress);
+            navigation.replace("MainApp");
             setHideLoading(true);
           })
           .catch((err) => {
+            setHideLoading(true);
             console.log("err", err.response);
             console.log("formData", formData);
             console.log("`${BASE_URL}selesaiQuiz`", `${BASE_URL}selesaiQuiz`);
