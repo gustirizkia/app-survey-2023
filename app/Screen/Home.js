@@ -89,20 +89,33 @@ export default function Home({ navigation }) {
               <Image source={IC_input} className="w-14 h-14 object-contain" />
               <Text className="text-xs text-slate-500 mt-1">Input Relawan</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Survey")}
-              className=" items-center"
-            >
-              <Image source={IC_survey} className="w-14 h-14 object-contain" />
-              <Text className="text-xs text-slate-500 mt-1">Survey</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("RealCount")}
-              className=" items-center"
-            >
-              <Image source={IC_qc} className="w-14 h-14 object-contain" />
-              <Text className="text-xs text-slate-500 mt-1">Quick Qount</Text>
-            </TouchableOpacity>
+            {/* Survey */}
+            {User?.target && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Survey")}
+                className=" items-center"
+              >
+                <Image
+                  source={IC_survey}
+                  className="w-14 h-14 object-contain"
+                />
+                <Text className="text-xs text-slate-500 mt-1">Survey</Text>
+              </TouchableOpacity>
+            )}
+            {/* Survey end */}
+
+            {/* Real Count */}
+            {User?.saksi && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("RealCount")}
+                className=" items-center"
+              >
+                <Image source={IC_qc} className="w-14 h-14 object-contain" />
+                <Text className="text-xs text-slate-500 mt-1">Quick Qount</Text>
+              </TouchableOpacity>
+            )}
+
+            {/* Real Count end */}
           </View>
         </View>
         <View>

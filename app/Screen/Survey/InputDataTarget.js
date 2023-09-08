@@ -1,19 +1,21 @@
 import axios from "axios";
+import * as Location from "expo-location";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { getData } from "../../Utils/Storage";
 import { BASE_URL } from "../../components/API";
 import DesaSelect from "./DesaSelect";
 import KecamatanSelect from "./Kecamatan";
-import * as Location from "expo-location";
 
 export default function InputDataTarget({ route, navigation }) {
   const [Kecamatan, SetKecamatan] = useState([]);
@@ -25,6 +27,8 @@ export default function InputDataTarget({ route, navigation }) {
   const [Alamat, SetAlamat] = useState(null);
   const [hideLoading, SetHideLoading] = useState(true);
   const [LocationData, SetLocationData] = useState(null);
+  const [mydate, setDate] = useState(null);
+  const [isDisplayDate, setShow] = useState(false);
 
   const { kota } = route.params;
   const token = getData("token");
@@ -84,16 +88,16 @@ export default function InputDataTarget({ route, navigation }) {
     if (!LocationData) {
       messageError = "Kami membutuhkan lokasi anda, silahkan refres halaman";
     } else if (!Kecamatan_id) {
-      messageError = "kecamatan belum di pilih";
+      messageError = "Kecamatan belum di pilih";
     } else if (!Desa_id) {
-      messageError = "desa belum di pilih";
+      messageError = "Desa belum di pilih";
     } else if (!Nama) {
-      messageError = "nama belum di isi";
+      messageError = "Nama belum di isi";
     } else if (!Alamat) {
-      messageError = "alamat belum di isi";
+      messageError = "Alamat belum di isi";
+    } else if (!mydate) {
+      messageError = "Tanggal lahir belum di isi";
     }
-
-    console.log("LocationData", LocationData);
 
     if (messageError) {
       Alert.alert("Data Belum Lengkap", messageError);
@@ -113,7 +117,9 @@ export default function InputDataTarget({ route, navigation }) {
         kota: Data?.id_kota,
         latitude: LocationData.coords.latitude,
         longitude: LocationData.coords.longitude,
+        tanggal_lahir: mydate,
       };
+      console.log("formData", formData);
       axios
         .post(`${BASE_URL}inputTarget`, formData, {
           headers: {
@@ -136,6 +142,15 @@ export default function InputDataTarget({ route, navigation }) {
     });
   };
 
+  const handleConfirm = (date) => {
+    setDate(date.toLocaleDateString());
+    setShow(false);
+  };
+
+  const showMode = () => {
+    setShow(true);
+  };
+
   return (
     <ScrollView>
       {!hideLoading && (
@@ -155,6 +170,25 @@ export default function InputDataTarget({ route, navigation }) {
             />
           </View>
         </View>
+        {/*  */}
+        <View className="mb-3">
+          <Text className=" font-medium">Tanggal Lahir</Text>
+          <TouchableOpacity onPress={showMode}>
+            <Text className="border mt-2 rounded-lg py-2 border-gray-400 px-2">
+              {mydate}
+            </Text>
+          </TouchableOpacity>
+
+          <DateTimePickerModal
+            isVisible={isDisplayDate}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={() => {
+              setShow(false);
+            }}
+          />
+        </View>
+        {/*  */}
         <View className="mb-3">
           <Text className=" font-medium">Alamat</Text>
           <View>

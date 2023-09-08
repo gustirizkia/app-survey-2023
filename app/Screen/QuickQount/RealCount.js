@@ -1,3 +1,5 @@
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   ScrollView,
@@ -7,22 +9,69 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
-import CalegBanner from "../../asset/kategori/ss_caleg.jpg";
-import UploadGambar from "../../components/UploadGambar";
-import { storeData } from "../../Utils/Storage";
-import Loading from "../../components/Loading";
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import { getData, storeData } from "../../Utils/Storage";
+import { BASE_URL, STORAGE_URL } from "../../components/API";
+import UploadGambar from "../../components/UploadGambar";
+import LoadingRealcount from "./LoadingRealcount";
 
 export default function RealCount({ navigation }) {
   const [SuaraSah, SetSuaraSah] = useState(0);
+  const [SuaraGolput, SetSuaraGolput] = useState(0);
   const [SuaraTidakSah, SetSuaraTidakSah] = useState(0);
-  const [HideLoading, SetHideLoading] = useState(true);
+  const [HideLoading, SetHideLoading] = useState(false);
+  const [Dapil, SetDapil] = useState(null);
+  const [Caleg, SetCaleg] = useState([]);
 
-  const handelSuaraSah = (e) => {
-    let tempSuaraSah = SuaraSah + parseInt(e);
-    SetSuaraSah(tempSuaraSah);
+  useEffect(() => {
+    getData("token").then((ressToken) => {
+      console.log("ressToken", ressToken.value);
+      axios
+        .get(`${BASE_URL}real-count-get-data`, {
+          headers: {
+            Authorization: "Bearer " + ressToken.value,
+          },
+        })
+        .then((ress) => {
+          console.log("ress", ress.data);
+          SetDapil(ress.data.dapil);
+
+          let tempDapil = [];
+          ress.data.caleg.forEach((element) => {
+            element.suara = 0;
+            tempDapil.push(element);
+          });
+          SetCaleg(tempDapil);
+
+          SetHideLoading(true);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    });
+  }, []);
+
+  const handelSuaraSah = (e, id) => {
+    let tempCaleg = [];
+    Caleg.forEach((element) => {
+      if (element.id === id) {
+        element.suara = parseInt(e);
+      }
+
+      tempCaleg.push(element);
+    });
+
+    SetCaleg(tempCaleg);
   };
+
+  useEffect(() => {
+    let tempSuaraSah = 0;
+    Caleg.forEach((element) => {
+      tempSuaraSah += parseInt(element.suara);
+    });
+
+    SetSuaraSah(tempSuaraSah);
+  }, [Caleg]);
 
   const handleSubmit = () => {
     storeData("real_count", true);
@@ -45,19 +94,46 @@ export default function RealCount({ navigation }) {
 
   return (
     <>
-      {!HideLoading && <Loading />}
+      {!HideLoading && <LoadingRealcount />}
       <ScrollView>
         <View className="px-3 bg-white py-3 min-h-screen">
           <Image
-            source={CalegBanner}
+            source={{
+              uri: `${STORAGE_URL}${Dapil?.image}`,
+            }}
             className="w-full h-32 object-contain mb-10"
+            resizeMode="contain"
           />
+          {Caleg.map((item) => {
+            return (
+              <View className="mb-4" key={item.id}>
+                <Text className="font-medium">
+                  No {item.nomor} {item.nama}
+                </Text>
+                <TextInput
+                  onChangeText={(e) => {
+                    if (e) {
+                      handelSuaraSah(e, item.id);
+                    } else {
+                      handelSuaraSah(0, item.id);
+                    }
+                  }}
+                  className="border px-2 mt-3 rounded-lg border-gray-400 text-lg py-1"
+                  placeholder="0"
+                  keyboardType="numeric"
+                />
+              </View>
+            );
+          })}
+
           <View className="mb-4">
-            <Text className="font-medium">No 1 Ridwan Alamsyah</Text>
+            <Text className="font-medium">Suara Golput</Text>
             <TextInput
               onChangeText={(e) => {
                 if (e) {
-                  handelSuaraSah(e);
+                  SetSuaraGolput(e);
+                } else {
+                  SetSuaraGolput(0);
                 }
               }}
               className="border px-2 mt-3 rounded-lg border-gray-400 text-lg py-1"
@@ -65,38 +141,15 @@ export default function RealCount({ navigation }) {
               keyboardType="numeric"
             />
           </View>
-          <View className="mb-4">
-            <Text className="font-medium">No 2 Topik Hidayat</Text>
-            <TextInput
-              onChangeText={(e) => {
-                if (e) {
-                  handelSuaraSah(e);
-                }
-              }}
-              className="border px-2 mt-3 rounded-lg border-gray-400 text-lg py-1"
-              placeholder="0"
-              keyboardType="numeric"
-            />
-          </View>
-          <View className="mb-4">
-            <Text className="font-medium">No 3 Human</Text>
-            <TextInput
-              onChangeText={(e) => {
-                if (e) {
-                  handelSuaraSah(e);
-                }
-              }}
-              className="border px-2 mt-3 rounded-lg border-gray-400 text-lg py-1"
-              placeholder="0"
-              keyboardType="numeric"
-            />
-          </View>
+
           <View className="mb-4">
             <Text className="font-medium">Jumlah Suara Tidak Sah</Text>
             <TextInput
               onChangeText={(e) => {
                 if (e) {
                   SetSuaraTidakSah(e);
+                } else {
+                  SetSuaraTidakSah(0);
                 }
               }}
               className="border px-2 mt-3 rounded-lg border-gray-400 text-lg py-1"
@@ -112,7 +165,7 @@ export default function RealCount({ navigation }) {
           <View className="mb-4 border-b border-gray-400 pb-2">
             <Text className="font-medium mb-3">Total Suara</Text>
             <Text className="text-lg">
-              {SuaraSah + parseInt(SuaraTidakSah)}
+              {SuaraSah + parseInt(SuaraTidakSah) + parseInt(SuaraGolput)}
             </Text>
           </View>
 
