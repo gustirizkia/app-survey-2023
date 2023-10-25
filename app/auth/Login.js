@@ -84,7 +84,7 @@ export default function Login({ navigation }) {
 
             <TouchableOpacity
               onPress={handleSubmit}
-              className="bg-yellow-600 py-3 px-2 rounded-full mt-4"
+              className="bg-green-600 py-3 px-2 rounded-full mt-4"
             >
               <Text className="text-white text-center">Login</Text>
             </TouchableOpacity>

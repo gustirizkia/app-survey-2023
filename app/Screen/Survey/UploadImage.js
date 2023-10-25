@@ -61,7 +61,7 @@ export default function UploadImage({ callbackImage }) {
               onPress={openCamera}
               className="justify-center items-center"
             >
-              <View className="bg-yellow-600 h-24 w-24 justify-center items-center rounded-full">
+              <View className="bg-green-600 h-24 w-24 justify-center items-center rounded-full">
                 <Icon name="camera" size={40} color={"#fff"} />
               </View>
               <Text className="text-lg font-medium mt-3 text-center">

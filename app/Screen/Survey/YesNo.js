@@ -20,8 +20,8 @@ export default function YesNo({ TempSoal, callbackData }) {
         }}
         className={`p-3 rounded-full mb-3 border flex-row items-center ${
           YesNo === "iya"
-            ? "bg-yellow-500 text-white  border-yellow-500 "
-            : "bg-yellow-100 border-yellow-100"
+            ? "bg-green-500 text-white  border-green-500 "
+            : "bg-green-100 border-green-100"
         }`}
       >
         <Text
@@ -40,8 +40,8 @@ export default function YesNo({ TempSoal, callbackData }) {
         }}
         className={`p-3 rounded-full mb-3 border flex-row items-center ${
           YesNo === "tidak"
-            ? "bg-yellow-500 text-white  border-yellow-500 "
-            : "bg-yellow-100 border-yellow-100"
+            ? "bg-green-500 text-white  border-green-500 "
+            : "bg-green-100 border-green-100"
         }`}
       >
         <Text

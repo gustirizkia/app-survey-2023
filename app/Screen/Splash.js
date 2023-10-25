@@ -37,9 +37,6 @@ export default function Splash({ navigation }) {
       <Image source={SP_T} className="absolute bottom-0 rotate-180 w-full" />
       <Image source={SP_B} className="absolute top-0 rotate-180" />
       <Image source={IMG} className="w-60 h-60 object-contain" />
-      <Text className="mt-6 font-bold text-lg rounded-full text-white px-6 py-2 bg-yellow-500">
-        App Relawan
-      </Text>
     </View>
   );
 }

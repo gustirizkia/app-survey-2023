@@ -226,7 +226,7 @@ export default function InputDataTarget({ route, navigation }) {
 
         <TouchableOpacity
           onPress={handleSubmitData}
-          className="rounded-lg bg-yellow-600 text-white py-2 mt-8 mb-4"
+          className="rounded-lg bg-green-600 text-white py-2 mt-8 mb-4"
         >
           <Text className="text-center text-white font-medium">
             Simpan Data

@@ -5,9 +5,9 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "Survey Dor To Dor",
+    "name": "NCT Survey",
     "icon": "./assets/logo_1.png",
-    "slug": "dor-todor",
+    "slug": "d2d",
     "android": {
       "package": "com.gustikantor.appsurveypolitik2023",
       "permissions": [
@@ -37,7 +37,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "cb2325da-122c-4677-9315-e7d1c1ecebff"
+        "projectId": "9e9cfc45-387a-46b8-a22a-a31c2cd99831"
       }
     },
     "ios": {
@@ -48,6 +48,7 @@
     },
     "updates": {
       "url": "https://u.expo.dev/cb2325da-122c-4677-9315-e7d1c1ecebff"
-    }
+    },
+    "owner": "gustirizkia"
   }
 }

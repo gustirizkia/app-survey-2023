@@ -88,7 +88,7 @@ export default function IndexSurvey({ navigation }) {
         <Topbar />
         <View className="bg-white mx-3 rounded-xl p-3 -mt-6 ">
           <Text className="">Total Survey</Text>
-          <Text className="text-2xl text-yellow-600 font-medium">
+          <Text className="text-2xl text-green-600 font-medium">
             {RiwayatSurvey.length}
           </Text>
         </View>
@@ -135,7 +135,7 @@ export default function IndexSurvey({ navigation }) {
                           })
                         }
                       >
-                        <Text className="text-yellow-700">Lanjut</Text>
+                        <Text className="text-green-700">Lanjut</Text>
                       </TouchableOpacity>
                     )}
                   </View>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -21,6 +22,11 @@ export default function RealCount({ navigation }) {
   const [SuaraTidakSah, SetSuaraTidakSah] = useState(0);
   const [HideLoading, SetHideLoading] = useState(false);
   const [Dapil, SetDapil] = useState(null);
+  const [RT, SetRT] = useState(null);
+  const [RW, SetRW] = useState(null);
+  const [TPS, SetTPS] = useState(null);
+  const [FotoC1, SetFotoC1] = useState(null);
+  const [FotoTPS, SetFotoTPS] = useState(null);
   const [Caleg, SetCaleg] = useState([]);
 
   useEffect(() => {
@@ -74,23 +80,54 @@ export default function RealCount({ navigation }) {
   }, [Caleg]);
 
   const handleSubmit = () => {
-    storeData("real_count", true);
-    SetHideLoading(false);
-    setTimeout(() => {
-      showMessage({
-        message: "Berhasil Input Real Count",
-        description: "Data real count sudah dikirim ",
-        type: "success",
-        duration: 5850,
+    let errorMsg = null;
+
+    if (!RW) {
+      errorMsg = "Form RW masih kosong";
+    } else if (!RT) {
+      errorMsg = "Form RT masih kosong";
+    } else if (!TPS) {
+      errorMsg = "Form TPS masih kosong";
+    } else if (!FotoC1) {
+      errorMsg = "Foto c1 masih kosong";
+    } else if (!FotoTPS) {
+      errorMsg = "Foto TPS masih kosong";
+    }
+
+    if (errorMsg) {
+      Alert.alert(errorMsg);
+    } else {
+      getData("token").then((token) => {
+
+        let tempFotoC1 = imgFormData(FotoC1);
+        let tempFotoTPS = imgFormData(FotoTPS);
+        let formData = new FormData();
+
+        formData.append("caleg", JSON.stringify(Caleg));
+        formData.append("rt", RT);
+        formData.append("rw", RW);
+        formData.append("tps", TPS);
+        
+
+
+        // axios.post(`${BASE_URL}real-count/inputSaksi`, {
+        //   caleg: Caleg,
+
+        // });
       });
-
-      SetHideLoading(true);
-    }, 2000);
-
-    setTimeout(() => {
-      navigation.replace("MainApp");
-    }, 3000);
+    }
   };
+
+  const imgFormData = (result) => {
+    let localUri = result.assets[0].uri;
+    let filename = localUri.split("/").pop();
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+
+    return {
+      uri: localUri, name: filename, type
+    }
+  }
 
   return (
     <>
@@ -167,6 +204,39 @@ export default function RealCount({ navigation }) {
             <Text className="text-lg">
               {SuaraSah + parseInt(SuaraTidakSah) + parseInt(SuaraGolput)}
             </Text>
+          </View>
+
+          <View className="mb-4">
+            <Text className="font-medium">RW</Text>
+            <TextInput
+              onChangeText={(e) => {
+                SetRW(e);
+              }}
+              className="border px-2 mt-3 rounded-lg border-gray-400 text-lg py-1"
+              placeholder="0"
+            />
+          </View>
+
+          <View className="mb-4">
+            <Text className="font-medium">RT</Text>
+            <TextInput
+              onChangeText={(e) => {
+                SetRT(e);
+              }}
+              className="border px-2 mt-3 rounded-lg border-gray-400 text-lg py-1"
+              placeholder="0"
+            />
+          </View>
+
+          <View className="mb-4">
+            <Text className="font-medium">TPS</Text>
+            <TextInput
+              onChangeText={(e) => {
+                SetTPS(e);
+              }}
+              className="border px-2 mt-3 rounded-lg border-gray-400 text-lg py-1"
+              placeholder="0"
+            />
           </View>
 
           <View className="mb-6">

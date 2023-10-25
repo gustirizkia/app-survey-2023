@@ -14,7 +14,7 @@ export default function Topbar() {
   }, []);
 
   return (
-    <View className="bg-yellow-600 rounded-b-3xl h-32 px-3">
+    <View className="bg-green-600 rounded-b-3xl h-32 px-3">
       <SafeAreaView className="flex-row justify-between items-center">
         <View className="flex-row items-center">
           <Icon name="user" size={24} color="#fff" />

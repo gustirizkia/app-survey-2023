@@ -144,7 +144,9 @@ export default function Home({ navigation }) {
                             })
                           }
                         >
-                          <Text className="text-yellow-700">Lanjut</Text>
+                          <Text className="text-green-700 font-semibold">
+                            Lanjut
+                          </Text>
                         </TouchableOpacity>
                       )}
                     </View>

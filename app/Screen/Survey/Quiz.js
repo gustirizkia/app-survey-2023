@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { getData } from "../../Utils/Storage";
 import axios from "axios";
@@ -9,11 +9,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import YesNo from "./YesNo";
 import Icon from "react-native-vector-icons/Entypo";
 import { TouchableOpacity } from "react-native";
+import * as Location from "expo-location";
 
 import * as ImagePicker from "expo-image-picker";
 import UploadImage from "./UploadImage";
 import Loading from "../../components/Loading";
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import Essay from "./Essay";
 
 export default function Quiz({ route, navigation }) {
   const [HideLoading, SetHideLoading] = useState(false);
@@ -23,6 +25,8 @@ export default function Quiz({ route, navigation }) {
   const [FotoBersama, SetFotoBersama] = useState(null);
   const [PreviewImage, SetPreviewImage] = useState(null);
   const [hideLoading, setHideLoading] = useState(false);
+  const [LocationData, SetLocationData] = useState(null);
+  const [JawabanEssayUser, SetJawabanEssayUser] = useState([]);
 
   const { target_id } = route.params;
   const token = getData("token");
@@ -62,34 +66,6 @@ export default function Quiz({ route, navigation }) {
   };
 
   const handelPilihanYesNo = (pilihan, soal, type) => {
-    token.then((resToken) => {
-      axios
-        .post(
-          `${BASE_URL}saveOne`,
-          {
-            soal_id: soal.id,
-            pilihan: pilihan,
-            data_target_id: target_id,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + resToken.value,
-              "content-type": "multipart/form-data",
-            },
-          }
-        )
-        .then((ress) => {
-          showMessage({
-            message: "Berhasil simpan data ",
-            // description: "Periksa Email dan Password Anda!",
-            type: "success",
-          });
-        })
-        .catch((err) => {
-          console.log("err save one yes no", err);
-        });
-    });
-
     let newData = [];
     let filterArray = null;
     if (soal.skip_soal) {
@@ -202,34 +178,6 @@ export default function Quiz({ route, navigation }) {
       yes_no: null,
     };
 
-    token.then((resToken) => {
-      axios
-        .post(
-          `${BASE_URL}saveOne`,
-          {
-            soal_id: item.id,
-            pilihan: pilihan,
-            data_target_id: target_id,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + resToken.value,
-              "content-type": "multipart/form-data",
-            },
-          }
-        )
-        .then((ress) => {
-          showMessage({
-            message: "Berhasil simpan data ",
-            // description: "Periksa Email dan Password Anda!",
-            type: "success",
-          });
-        })
-        .catch((err) => {
-          console.log("err save one", err);
-        });
-    });
-
     let soal_id = null;
     PilihanUser.map((itemMap) => {
       if (itemMap.soal_id === item.id) {
@@ -266,14 +214,79 @@ export default function Quiz({ route, navigation }) {
     // end function
   };
 
+  const setJawabanEssay = (jawaban, item) => {
+    let formJawaban = {
+      soal_id: item.id,
+      pilihan_id: null,
+      jawaban_user: jawaban,
+    };
+
+    let soal_id = null;
+    JawabanEssayUser.map((itemMap) => {
+      if (itemMap.soal_id === item.id) {
+        soal_id = item.id;
+      }
+    });
+
+    if (soal_id) {
+      let newData = JawabanEssayUser.map((el) => {
+        if (el.soal_id === soal_id) {
+          return { ...el, jawaban_user: jawaban };
+        }
+
+        return el;
+      });
+
+      SetJawabanEssayUser(newData);
+    } else {
+      let Data = [];
+      JawabanEssayUser.map((itemEssay) => {
+        Data.push(itemEssay);
+      });
+
+      Data.push(formJawaban);
+
+      SetJawabanEssayUser(Data);
+      console.log("formJawaban", formJawaban);
+      console.log("Data", Data);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        alert("kami mebutuhkan akses location");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      if (!location.mocked) {
+        SetLocationData(location);
+      } else {
+        alert("Sitem mendeteksi fake gps");
+      }
+    })();
+  }, []);
+
   const handelSubmitData = () => {
+    console.log("JawabanEssayUser", JawabanEssayUser);
+    let messageError = null;
     if (!FotoBersama) {
-      alert("Upload foto bersama terlebih dahulu");
+      messageError = "Upload foto bersama terlebih dahulu";
+    }
+
+    if (!LocationData) {
+      messageError = "Kami membutuhkan lokasi anda, silahkan refres halaman";
+    }
+
+    if (messageError) {
+      Alert.alert("Data Belum Lengkap", messageError);
+
       return;
     }
 
     setHideLoading(false);
-
     let result = FotoBersama;
     let localUri = result.assets[0].uri;
     let filename = localUri.split("/").pop();
@@ -282,8 +295,11 @@ export default function Quiz({ route, navigation }) {
 
     let formData = new FormData();
     formData.append("pilihan", JSON.stringify(PilihanUser));
+    formData.append("jawaban_essay_user", JSON.stringify(JawabanEssayUser));
     formData.append("target_id", target_id);
     formData.append("image", { uri: localUri, name: filename, type });
+    formData.append("latitude", LocationData.coords.latitude);
+    formData.append("longitude", LocationData.coords.longitude);
 
     token.then((token) => {
       if (token) {
@@ -296,6 +312,7 @@ export default function Quiz({ route, navigation }) {
           })
           .then((ress) => {
             navigation.replace("MainApp");
+            console.log("ress", ress);
             setHideLoading(true);
           })
           .catch((err) => {
@@ -321,7 +338,8 @@ export default function Quiz({ route, navigation }) {
         {SoalGeneral.map((item) => {
           return (
             <View key={item.id} className="bg-white rounded-lg p-3 mb-4">
-              <Text className="mb-4 font-semibold text-lg">{item.title}</Text>
+              <Text className="mb-1 font-semibold text-lg">{item.title}</Text>
+              <Text className="mb-4 text-gray-700">{item.subtitle}</Text>
               {item.yes_no > 0 ? (
                 <>
                   <YesNo
@@ -333,12 +351,21 @@ export default function Quiz({ route, navigation }) {
                 </>
               ) : (
                 <>
-                  <MultiplePilihan
-                    TempSoal={item}
-                    callBack={(pilihan, itemData) => {
-                      handleSetPilihan(pilihan, itemData);
-                    }}
-                  />
+                  {item.tipe === "pg" ? (
+                    <MultiplePilihan
+                      TempSoal={item}
+                      callBack={(pilihan, itemData) => {
+                        handleSetPilihan(pilihan, itemData);
+                      }}
+                    />
+                  ) : (
+                    <Essay
+                      TempSoal={item}
+                      callBack={(jawaban, itemData) => {
+                        setJawabanEssay(jawaban, itemData);
+                      }}
+                    />
+                  )}
                 </>
               )}
             </View>
@@ -353,7 +380,7 @@ export default function Quiz({ route, navigation }) {
         <View className="bg-white p-3">
           <TouchableOpacity
             onPress={handelSubmitData}
-            className=" bg-yellow-600 py-3 rounded-lg mt-4 mb-8"
+            className=" bg-green-600 py-3 rounded-lg mt-4 mb-8"
           >
             <Text className="text-white text-center font-medium">
               Simpan dan selesai

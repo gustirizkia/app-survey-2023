@@ -42,25 +42,25 @@ export default function TabItem({ state, descriptors, navigation }) {
         const IconComponent = () => {
           if (label === "Home") {
             return isFocused ? (
-              <Icon name="home" size={20} color="#f59e0b" />
+              <Icon name="home" size={20} color="#36B37E" />
             ) : (
               <Icon name="home" size={20} color="#A3A3A3" />
             );
           } else if (label === "Cart") {
             return isFocused ? (
-              <Icon name="handbag" size={20} color="#f59e0b" />
+              <Icon name="handbag" size={20} color="#36B37E" />
             ) : (
               <Icon name="handbag" size={20} color="#A3A3A3" />
             );
           } else if (label === "Profile") {
             return isFocused ? (
-              <Icon name="user" size={20} color="#f59e0b" />
+              <Icon name="user" size={20} color="#36B37E" />
             ) : (
               <Icon name="user" size={20} color="#A3A3A3" />
             );
           } else if (label === "Survey") {
             return isFocused ? (
-              <Icon name="book-open" size={20} color="#f59e0b" />
+              <Icon name="book-open" size={20} color="#36B37E" />
             ) : (
               <Icon name="book-open" size={20} color="#A3A3A3" />
             );
@@ -82,7 +82,7 @@ export default function TabItem({ state, descriptors, navigation }) {
             <IconComponent />
             <Text
               className={`text-xs  ${
-                isFocused ? "text-amber-500" : "text-gray-400"
+                isFocused ? "text-green-600" : "text-gray-400"
               }`}
             >
               {label}

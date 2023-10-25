@@ -81,7 +81,7 @@ export default function UploadGambar({
                 }}
                 className="justify-center items-center bg-white"
               >
-                <View className="bg-yellow-600 h-20 w-20 justify-center items-center rounded-full">
+                <View className="bg-green-600 h-20 w-20 justify-center items-center rounded-full">
                   <Icon name="camera" size={34} color={"#fff"} />
                 </View>
                 <Text className="font-medium mt-3 text-center">{Title}</Text>

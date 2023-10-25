@@ -12,6 +12,7 @@ import Quiz from "../Screen/Survey/Quiz";
 import Profile from "../Screen/Profile";
 import RealCount from "../Screen/QuickQount/RealCount";
 import Splash from "../Screen/Splash";
+import CreateRelawan from "../Screen/Relawan/CreateRelawan";
 
 const Tab = createBottomTabNavigator();
 
@@ -72,6 +73,17 @@ export default function AppNav() {
         component={RealCount}
         options={{
           title: "Real Count",
+          headerStyle: {
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="InputRelawan"
+        component={CreateRelawan}
+        options={{
+          title: "Input Relawan",
           headerStyle: {
             elevation: 0,
             shadowOpacity: 0,

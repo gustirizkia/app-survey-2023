@@ -23,12 +23,12 @@ export default function MultiplePilihan({ TempSoal, callBack }) {
             key={item.id}
             className={`p-3 rounded-full mb-3 border flex-row items-center ${
               PilihanId === item.id
-                ? "bg-yellow-500 text-white  border-yellow-500 "
-                : "bg-yellow-100 border-yellow-100"
+                ? "bg-green-500 text-white  border-green-500 "
+                : "bg-green-100 border-green-100"
             }`}
           >
             <Text className={`${PilihanId === item.id ? " text-white  " : ""}`}>
-              {index + 1}.
+              {index + 1}.{"  "}
             </Text>
             <Text className={`${PilihanId === item.id ? " text-white  " : ""}`}>
               {item.title}
